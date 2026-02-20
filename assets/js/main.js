@@ -2,131 +2,139 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const colorPicker = document.getElementById("colorPicker");
     const resultMessage = document.getElementById("resultMessage");
+    const resultCard = document.getElementById("resultCard");
 
     const removeBtn = document.getElementById("removeImage");
     const marker = document.getElementById("marker");
     const colorPreview = document.getElementById("colorPreview");
     const colorValues = document.getElementById("colorValues");
 
-    const resultCard = document.getElementById("resultCard");
-
-    colorPicker.addEventListener("input", () => {
-
-    const hex = colorPicker.value;
-    const { r, g, b } = hexToRgb(hex);
-
-    const allowed = isColorAllowed(r, g, b);
-
-    updateResultUI(allowed);
-});
-
     const imageUpload = document.getElementById("imageUpload");
-const canvas = document.getElementById("imageCanvas");
-const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById("imageCanvas");
+    const ctx = canvas.getContext("2d");
 
-// Quando o usuário seleciona uma imagem
-imageUpload.addEventListener("change", function (event) {
+    /* =========================
+       RESULT UI
+    ========================== */
 
-    const file = event.target.files[0];
-    if (!file) return;
+    function updateResultUI(allowed) {
+        if (allowed) {
+            resultMessage.textContent = "DENTRO DA PALETA ✅";
+            resultMessage.style.color = "#2e7d32";
+            resultCard.classList.remove("result-blocked");
+            resultCard.classList.add("result-allowed");
+        } else {
+            resultMessage.textContent = "FORA DA PALETA ❌";
+            resultMessage.style.color = "#c62828";
+            resultCard.classList.remove("result-allowed");
+            resultCard.classList.add("result-blocked");
+        }
+    }
 
-    const reader = new FileReader();
+    /* =========================
+       COLOR PICKER
+    ========================== */
 
-    reader.onload = function (e) {
-        const img = new Image();
+    function handleColorSelection() {
+        const hex = colorPicker.value;
+        if (!hex) return;
 
-        img.onload = function () {
+        const { r, g, b } = hexToRgb(hex);
+        const allowed = isColorAllowed(r, g, b);
 
-            // Ajusta o tamanho do canvas proporcionalmente
-            const maxWidth = 500;
-            const scale = maxWidth / img.width;
+        updateResultUI(allowed);
+    }
 
-            canvas.width = maxWidth;
-            canvas.height = img.height * scale;
+    colorPicker.addEventListener("input", handleColorSelection);
+    colorPicker.addEventListener("change", handleColorSelection);
 
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    /* =========================
+       UPLOAD DE IMAGEM
+    ========================== */
 
-            canvas.style.display = "block";
+    imageUpload.addEventListener("change", function (event) {
 
-            removeBtn.style.display = "inline-block";
-            marker.style.display = "none";
-            colorPreview.style.backgroundColor = "transparent";
-            colorValues.textContent = "";
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const img = new Image();
+
+            img.onload = function () {
+
+                const maxWidth = 500;
+                const scale = maxWidth / img.width;
+
+                canvas.width = maxWidth;
+                canvas.height = img.height * scale;
+
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                canvas.style.display = "block";
+                removeBtn.style.display = "block";
+
+                marker.style.display = "none";
+                colorPreview.style.backgroundColor = "transparent";
+                colorValues.textContent = "";
+            };
+
+            img.src = e.target.result;
         };
 
-        img.src = e.target.result;
-    };
+        reader.readAsDataURL(file);
+    });
 
-    reader.readAsDataURL(file);
-});
+    /* =========================
+       CAPTURA DE PIXEL
+    ========================== */
 
-canvas.addEventListener("click", function (event) {
+    canvas.addEventListener("click", function (event) {
 
-    const rect = canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-    const pixel = ctx.getImageData(x, y, 1, 1).data;
+        const pixel = ctx.getImageData(x, y, 1, 1).data;
 
-    const r = pixel[0];
-    const g = pixel[1];
-    const b = pixel[2];
+        const r = pixel[0];
+        const g = pixel[1];
+        const b = pixel[2];
 
-    // 🎯 Move marcador
-    marker.style.left = x + "px";
-    marker.style.top = y + "px";
-    marker.style.display = "block";
+        marker.style.left = x + "px";
+        marker.style.top = y + "px";
+        marker.style.display = "block";
 
-    // 🎨 Mostra cor capturada
-    const rgbString = `rgb(${r}, ${g}, ${b})`;
-    colorPreview.style.backgroundColor = rgbString;
-    colorValues.textContent = rgbString;
+        const rgbString = `rgb(${r}, ${g}, ${b})`;
+        colorPreview.style.backgroundColor = rgbString;
+        colorValues.textContent = rgbString;
 
-    const allowed = isColorAllowed(r, g, b);
+        const allowed = isColorAllowed(r, g, b);
+        updateResultUI(allowed);
+    });
 
-    if (allowed) {
-    resultMessage.textContent = "DENTRO DA PALETA ✅";
-    resultMessage.style.color = "#2e7d32";
-    resultCard.classList.remove("result-blocked");
-    resultCard.classList.add("result-allowed");
-} else {
-    resultMessage.textContent = "FORA DA PALETA ❌";
-    resultMessage.style.color = "#c62828";
-    resultCard.classList.remove("result-allowed");
-    resultCard.classList.add("result-blocked");
-}
-});
+    /* =========================
+       REMOVER IMAGEM
+    ========================== */
 
-function updateResultUI(allowed) {
+    removeBtn.addEventListener("click", function () {
 
-    if (allowed) {
-        resultMessage.textContent = "DENTRO DA PALETA ✅";
-        resultMessage.style.color = "#2e7d32";
-        resultCard.classList.remove("result-blocked");
-        resultCard.classList.add("result-allowed");
-    } else {
-        resultMessage.textContent = "FORA DA PALETA ❌";
-        resultMessage.style.color = "#c62828";
-        resultCard.classList.remove("result-allowed");
-        resultCard.classList.add("result-blocked");
-    }
-}
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.display = "none";
 
-removeBtn.addEventListener("click", function () {
+        marker.style.display = "none";
+        removeBtn.style.display = "none";
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.style.display = "none";
+        colorPreview.style.backgroundColor = "transparent";
+        colorValues.textContent = "";
 
-    marker.style.display = "none";
-    removeBtn.style.display = "none";
+        imageUpload.value = "";
 
-    colorPreview.style.backgroundColor = "transparent";
-    colorValues.textContent = "";
-
-    imageUpload.value = "";
-    resultMessage.textContent = "Selecione uma opção acima";
-    resultMessage.style.color = "#1c2b39";
-});
+        resultMessage.textContent = "Selecione uma opção acima";
+        resultMessage.style.color = "#1c2b39";
+        resultCard.classList.remove("result-allowed", "result-blocked");
+    });
 
 });
