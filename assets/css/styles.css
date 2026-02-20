@@ -111,3 +111,11 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
 }
+
+#imageCanvas {
+    margin-top: 15px;
+    max-width: 100%;
+    display: none;
+    border-radius: 12px;
+    cursor: crosshair;
+}
