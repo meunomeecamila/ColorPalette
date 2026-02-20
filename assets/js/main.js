@@ -8,22 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const colorPreview = document.getElementById("colorPreview");
     const colorValues = document.getElementById("colorValues");
 
+    const resultCard = document.getElementById("resultCard");
+
     colorPicker.addEventListener("input", () => {
 
-        const hex = colorPicker.value;
-        const { r, g, b } = hexToRgb(hex);
+    const hex = colorPicker.value;
+    const { r, g, b } = hexToRgb(hex);
 
-        const allowed = isColorAllowed(r, g, b);
+    const allowed = isColorAllowed(r, g, b);
 
-        if (allowed) {
-            resultMessage.textContent = "DENTRO DA PALETA ✅";
-            resultMessage.style.color = "green";
-        } else {
-            resultMessage.textContent = "FORA DA PALETA ❌";
-            resultMessage.style.color = "red";
-        }
-
-    });
+    updateResultUI(allowed);
+});
 
     const imageUpload = document.getElementById("imageUpload");
 const canvas = document.getElementById("imageCanvas");
@@ -91,13 +86,32 @@ canvas.addEventListener("click", function (event) {
     const allowed = isColorAllowed(r, g, b);
 
     if (allowed) {
+    resultMessage.textContent = "DENTRO DA PALETA ✅";
+    resultMessage.style.color = "#2e7d32";
+    resultCard.classList.remove("result-blocked");
+    resultCard.classList.add("result-allowed");
+} else {
+    resultMessage.textContent = "FORA DA PALETA ❌";
+    resultMessage.style.color = "#c62828";
+    resultCard.classList.remove("result-allowed");
+    resultCard.classList.add("result-blocked");
+}
+});
+
+function updateResultUI(allowed) {
+
+    if (allowed) {
         resultMessage.textContent = "DENTRO DA PALETA ✅";
-        resultMessage.style.color = "green";
+        resultMessage.style.color = "#2e7d32";
+        resultCard.classList.remove("result-blocked");
+        resultCard.classList.add("result-allowed");
     } else {
         resultMessage.textContent = "FORA DA PALETA ❌";
-        resultMessage.style.color = "red";
+        resultMessage.style.color = "#c62828";
+        resultCard.classList.remove("result-allowed");
+        resultCard.classList.add("result-blocked");
     }
-});
+}
 
 removeBtn.addEventListener("click", function () {
 

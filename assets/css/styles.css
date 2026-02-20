@@ -210,3 +210,77 @@ body {
     background-color: #9fd9ff;
     transform: scale(1.1);
 }
+
+.color-picker-area,
+.upload-area {
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.color-picker-area:hover,
+.upload-area:hover {
+    transform: translateY(-2px);
+}
+
+.result-card {
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.result-allowed {
+    background-color: rgba(80, 200, 120, 0.15);
+}
+
+.result-blocked {
+    background-color: rgba(220, 80, 80, 0.15);
+}
+
+#colorPreview {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    border: 2px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+#colorPreview:hover {
+    transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+
+    .color-picker-area,
+    .upload-area {
+        padding: 18px;
+    }
+
+    .palette-grid {
+        gap: 10px;
+    }
+
+    .color-box {
+        height: 60px;
+    }
+
+    #resultMessage {
+        font-size: 1.2rem;
+    }
+
+    .remove-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+}
+
+body {
+    transition: background-color 0.3s ease;
+}
