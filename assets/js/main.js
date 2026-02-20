@@ -2,155 +2,131 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const colorPicker = document.getElementById("colorPicker");
     const resultMessage = document.getElementById("resultMessage");
-    const resultCard = document.getElementById("resultCard");
 
     const removeBtn = document.getElementById("removeImage");
     const marker = document.getElementById("marker");
     const colorPreview = document.getElementById("colorPreview");
     const colorValues = document.getElementById("colorValues");
 
+    const resultCard = document.getElementById("resultCard");
+
+    colorPicker.addEventListener("input", () => {
+
+    const hex = colorPicker.value;
+    const { r, g, b } = hexToRgb(hex);
+
+    const allowed = isColorAllowed(r, g, b);
+
+    updateResultUI(allowed);
+});
+
     const imageUpload = document.getElementById("imageUpload");
-    const canvas = document.getElementById("imageCanvas");
-    const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("imageCanvas");
+const ctx = canvas.getContext("2d");
 
-    /* =========================
-       RESULT UI (COMPARTILHADO)
-    ========================== */
+// Quando o usuário seleciona uma imagem
+imageUpload.addEventListener("change", function (event) {
 
-    function updateResultUI(allowed) {
-        if (allowed) {
-            resultMessage.textContent = "DENTRO DA PALETA ✅";
-            resultMessage.style.color = "#2e7d32";
-            resultCard.classList.remove("result-blocked");
-            resultCard.classList.add("result-allowed");
-        } else {
-            resultMessage.textContent = "FORA DA PALETA ❌";
-            resultMessage.style.color = "#c62828";
-            resultCard.classList.remove("result-allowed");
-            resultCard.classList.add("result-blocked");
-        }
-    }
+    const file = event.target.files[0];
+    if (!file) return;
 
-    /* =========================
-       COLOR PICKER (FIX iOS)
-    ========================== */
+    const reader = new FileReader();
 
-    let intervalId;
-    let lastColor = colorPicker.value;
+    reader.onload = function (e) {
+        const img = new Image();
 
-    function checkColorChange() {
-        if (colorPicker.value !== lastColor) {
-            lastColor = colorPicker.value;
+        img.onload = function () {
 
-            const { r, g, b } = hexToRgb(lastColor);
-            const allowed = isColorAllowed(r, g, b);
+            // Ajusta o tamanho do canvas proporcionalmente
+            const maxWidth = 500;
+            const scale = maxWidth / img.width;
 
-            updateResultUI(allowed);
-        }
-    }
+            canvas.width = maxWidth;
+            canvas.height = img.height * scale;
 
-    // Eventos padrão
-    colorPicker.addEventListener("input", checkColorChange);
-    colorPicker.addEventListener("change", checkColorChange);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    // Monitoramento ativo enquanto o picker estiver aberto (iOS fix)
-    colorPicker.addEventListener("focus", () => {
-        intervalId = setInterval(checkColorChange, 100);
-    });
+            canvas.style.display = "block";
 
-    colorPicker.addEventListener("blur", () => {
-        clearInterval(intervalId);
-    });
-
-    /* =========================
-       UPLOAD DE IMAGEM
-    ========================== */
-
-    imageUpload.addEventListener("change", function (event) {
-
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const img = new Image();
-
-            img.onload = function () {
-
-                const maxWidth = 500;
-                const scale = maxWidth / img.width;
-
-                canvas.width = maxWidth;
-                canvas.height = img.height * scale;
-
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                canvas.style.display = "block";
-                removeBtn.style.display = "block";
-
-                marker.style.display = "none";
-                colorPreview.style.backgroundColor = "transparent";
-                colorValues.textContent = "";
-            };
-
-            img.src = e.target.result;
+            removeBtn.style.display = "inline-block";
+            marker.style.display = "none";
+            colorPreview.style.backgroundColor = "transparent";
+            colorValues.textContent = "";
         };
 
-        reader.readAsDataURL(file);
-    });
+        img.src = e.target.result;
+    };
 
-    /* =========================
-       CAPTURA DE PIXEL
-    ========================== */
+    reader.readAsDataURL(file);
+});
 
-    canvas.addEventListener("click", function (event) {
+canvas.addEventListener("click", function (event) {
 
-        const rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
-        const pixel = ctx.getImageData(x, y, 1, 1).data;
+    const pixel = ctx.getImageData(x, y, 1, 1).data;
 
-        const r = pixel[0];
-        const g = pixel[1];
-        const b = pixel[2];
+    const r = pixel[0];
+    const g = pixel[1];
+    const b = pixel[2];
 
-        // Move marcador
-        marker.style.left = x + "px";
-        marker.style.top = y + "px";
-        marker.style.display = "block";
+    // 🎯 Move marcador
+    marker.style.left = x + "px";
+    marker.style.top = y + "px";
+    marker.style.display = "block";
 
-        // Mostra preview da cor
-        const rgbString = `rgb(${r}, ${g}, ${b})`;
-        colorPreview.style.backgroundColor = rgbString;
-        colorValues.textContent = rgbString;
+    // 🎨 Mostra cor capturada
+    const rgbString = `rgb(${r}, ${g}, ${b})`;
+    colorPreview.style.backgroundColor = rgbString;
+    colorValues.textContent = rgbString;
 
-        const allowed = isColorAllowed(r, g, b);
-        updateResultUI(allowed);
-    });
+    const allowed = isColorAllowed(r, g, b);
 
-    /* =========================
-       REMOVER IMAGEM
-    ========================== */
+    if (allowed) {
+    resultMessage.textContent = "DENTRO DA PALETA ✅";
+    resultMessage.style.color = "#2e7d32";
+    resultCard.classList.remove("result-blocked");
+    resultCard.classList.add("result-allowed");
+} else {
+    resultMessage.textContent = "FORA DA PALETA ❌";
+    resultMessage.style.color = "#c62828";
+    resultCard.classList.remove("result-allowed");
+    resultCard.classList.add("result-blocked");
+}
+});
 
-    removeBtn.addEventListener("click", function () {
+function updateResultUI(allowed) {
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.style.display = "none";
+    if (allowed) {
+        resultMessage.textContent = "DENTRO DA PALETA ✅";
+        resultMessage.style.color = "#2e7d32";
+        resultCard.classList.remove("result-blocked");
+        resultCard.classList.add("result-allowed");
+    } else {
+        resultMessage.textContent = "FORA DA PALETA ❌";
+        resultMessage.style.color = "#c62828";
+        resultCard.classList.remove("result-allowed");
+        resultCard.classList.add("result-blocked");
+    }
+}
 
-        marker.style.display = "none";
-        removeBtn.style.display = "none";
+removeBtn.addEventListener("click", function () {
 
-        colorPreview.style.backgroundColor = "transparent";
-        colorValues.textContent = "";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.display = "none";
 
-        imageUpload.value = "";
+    marker.style.display = "none";
+    removeBtn.style.display = "none";
 
-        resultMessage.textContent = "Selecione uma opção acima";
-        resultMessage.style.color = "#1c2b39";
-        resultCard.classList.remove("result-allowed", "result-blocked");
-    });
+    colorPreview.style.backgroundColor = "transparent";
+    colorValues.textContent = "";
+
+    imageUpload.value = "";
+    resultMessage.textContent = "Selecione uma opção acima";
+    resultMessage.style.color = "#1c2b39";
+});
 
 });
