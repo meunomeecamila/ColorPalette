@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Camila 19</title>
+
+    <!-- Fonte elegante -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="header-overlay">
+            <!--<h1>Camila 19</h1>-->
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <h2>Confira se sua roupa está dentro da paleta do evento</h2>
+            <p>Selecione uma cor ou envie uma foto para verificar.</p>
+        </section>
+
+        <!-- Aqui depois vamos colocar:
+             - Paleta visual
+             - Color picker
+             - Upload
+             - Resultado
+        -->
+
+        <section class="palette-section">
+    <h2>Paleta Oficial</h2>
+    <div class="palette-grid">
+        <div class="color-box azul"></div>
+        <div class="color-box verde"></div>
+        <div class="color-box amarelo"></div>
+        <div class="color-box bege"></div>
+        <div class="color-box marrom"></div>
+        <div class="color-box branco"></div>
+        <div class="color-box cinza"></div>
+    </div>
+</section>
+
+<section class="interaction-section">
+
+    <div class="color-picker-area">
+        <h3>Selecionar uma cor</h3>
+        <input type="color" id="colorPicker">
+    </div>
+
+    <div class="upload-area">
+        <h3>Enviar foto da sua roupa</h3>
+        <input type="file" id="imageUpload" accept="image/*">
+        <canvas id="imageCanvas"></canvas>
+    </div>
+
+</section>
+
+<section class="result-section">
+    <h2 id="resultMessage">Selecione uma opção acima</h2>
+</section>
+
+    </main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/color-utils.js"></script>
+<script src="assets/js/validator.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>

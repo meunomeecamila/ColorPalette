@@ -1,0 +1,113 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fundo azul claro */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #e1eef5;
+    color: #1c2b39;
+    min-height: 100vh;
+}
+
+/* Cabeçalho 
+.main-header {
+    background-color: #0a2a66;
+    padding: 20px;
+    text-align: center;
+}
+
+.main-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: white;
+    letter-spacing: 2px;
+} */
+
+/* Conteúdo principal */
+.container {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.intro p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.main-header {
+    background-image: url('../images/header.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    width: 100%;
+    aspect-ratio: 4 / 1;
+
+    background-color: #dff3ff; /* mesma cor do fundo */
+}
+
+.palette-section {
+    margin-top: 40px;
+}
+
+.palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.color-box {
+    height: 80px;
+    border-radius: 12px;
+}
+
+/* Cores representativas */
+.azul { background: linear-gradient(to right, #1a3951, #e0e9f4); }
+.verde { background: linear-gradient(to right,  #41512e, #d2e6ac); }
+.amarelo { background: linear-gradient(to right, #887131, #e4dab1); }
+.bege { background-color: #dcc7a4; }
+.marrom { background-color: #8b5e3c; }
+.branco { background-color: #ffffff; border: 1px solid #ccc; }
+.cinza { background-color: #9e9e9e; }
+
+.interaction-section {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.color-picker-area,
+.upload-area {
+    background-color: rgba(255,255,255,0.6);
+    padding: 20px;
+    border-radius: 16px;
+}
+
+#imageCanvas {
+    margin-top: 15px;
+    max-width: 100%;
+    display: none;
+}
+
+.result-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+#resultMessage {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
