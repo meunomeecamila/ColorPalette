@@ -41,9 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const { r, g, b } = hexToRgb(hex);
     const hsl = rgbToHsl(r, g, b);
 
-    console.log("HEX:", hex);
-    console.log("RGB:", r, g, b);
-    console.log("HSL:", hsl);
+    resultMessage.textContent =
+        `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
 
     const allowed = isColorAllowed(r, g, b);
     updateResultUI(allowed);
