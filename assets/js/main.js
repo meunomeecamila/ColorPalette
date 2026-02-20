@@ -36,14 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================== */
 
     function handleColorSelection() {
-        const hex = colorPicker.value;
-        if (!hex) return;
+    const hex = colorPicker.value;
 
-        const { r, g, b } = hexToRgb(hex);
-        const allowed = isColorAllowed(r, g, b);
+    const { r, g, b } = hexToRgb(hex);
+    const hsl = rgbToHsl(r, g, b);
 
-        updateResultUI(allowed);
-    }
+    console.log("HEX:", hex);
+    console.log("RGB:", r, g, b);
+    console.log("HSL:", hsl);
+
+    const allowed = isColorAllowed(r, g, b);
+    updateResultUI(allowed);
+}
 
     colorPicker.addEventListener("input", handleColorSelection);
     colorPicker.addEventListener("change", handleColorSelection);
@@ -132,7 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         imageUpload.value = "";
 
-        resultMessage.textContent = "Selecione uma opção acima";
+        //resultMessage.textContent = "Selecione uma opção acima";
+        resultMessage.textContent = `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
         resultMessage.style.color = "#1c2b39";
         resultCard.classList.remove("result-allowed", "result-blocked");
     });
