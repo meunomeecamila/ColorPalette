@@ -119,3 +119,94 @@ body {
     border-radius: 12px;
     cursor: crosshair;
 }
+
+.upload-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.remove-btn {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.canvas-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+#imageCanvas {
+    max-width: 100%;
+    display: none;
+    border-radius: 12px;
+    cursor: crosshair;
+}
+
+#marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: transparent;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.picked-color {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#colorPreview {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.canvas-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    background-color: #bfe6ff;
+    color: #0a2a66;
+
+    border: none;
+    border-radius: 50%;
+
+    width: 32px;
+    height: 32px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: none;
+
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    background-color: #9fd9ff;
+    transform: scale(1.1);
+}

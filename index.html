@@ -54,10 +54,21 @@
     </div>
 
     <div class="upload-area">
-        <h3>Enviar foto da sua roupa</h3>
-        <input type="file" id="imageUpload" accept="image/*">
+    <h3>Enviar foto da sua roupa</h3>
+
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <div class="canvas-wrapper">
         <canvas id="imageCanvas"></canvas>
+        <div id="marker"></div>
+        <button id="removeImage" class="remove-btn">✕</button>
     </div>
+
+    <div class="picked-color">
+        <div id="colorPreview"></div>
+        <span id="colorValues"></span>
+    </div>
+</div>
 
 </section>
 

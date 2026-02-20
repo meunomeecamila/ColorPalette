@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const colorPicker = document.getElementById("colorPicker");
     const resultMessage = document.getElementById("resultMessage");
 
+    const removeBtn = document.getElementById("removeImage");
+    const marker = document.getElementById("marker");
+    const colorPreview = document.getElementById("colorPreview");
+    const colorValues = document.getElementById("colorValues");
+
     colorPicker.addEventListener("input", () => {
 
         const hex = colorPicker.value;
@@ -47,6 +52,11 @@ imageUpload.addEventListener("change", function (event) {
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
             canvas.style.display = "block";
+
+            removeBtn.style.display = "inline-block";
+            marker.style.display = "none";
+            colorPreview.style.backgroundColor = "transparent";
+            colorValues.textContent = "";
         };
 
         img.src = e.target.result;
@@ -68,6 +78,16 @@ canvas.addEventListener("click", function (event) {
     const g = pixel[1];
     const b = pixel[2];
 
+    // 🎯 Move marcador
+    marker.style.left = x + "px";
+    marker.style.top = y + "px";
+    marker.style.display = "block";
+
+    // 🎨 Mostra cor capturada
+    const rgbString = `rgb(${r}, ${g}, ${b})`;
+    colorPreview.style.backgroundColor = rgbString;
+    colorValues.textContent = rgbString;
+
     const allowed = isColorAllowed(r, g, b);
 
     if (allowed) {
@@ -77,6 +97,22 @@ canvas.addEventListener("click", function (event) {
         resultMessage.textContent = "FORA DA PALETA ❌";
         resultMessage.style.color = "red";
     }
+});
+
+removeBtn.addEventListener("click", function () {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.display = "none";
+
+    marker.style.display = "none";
+    removeBtn.style.display = "none";
+
+    colorPreview.style.backgroundColor = "transparent";
+    colorValues.textContent = "";
+
+    imageUpload.value = "";
+    resultMessage.textContent = "Selecione uma opção acima";
+    resultMessage.style.color = "#1c2b39";
 });
 
 });
