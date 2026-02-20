@@ -136,8 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         imageUpload.value = "";
 
-        //resultMessage.textContent = "Selecione uma opção acima";
-        resultMessage.textContent = `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
+        resultMessage.textContent = "Selecione uma opção acima";
+        //resultMessage.textContent = `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
         resultMessage.style.color = "#1c2b39";
         resultCard.classList.remove("result-allowed", "result-blocked");
     });
