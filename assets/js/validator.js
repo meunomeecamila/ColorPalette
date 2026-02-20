@@ -1,23 +1,31 @@
 function isColorAllowed(r, g, b) {
+
     const { h, s, l } = rgbToHsl(r, g, b);
 
-    // ❌ Bloqueia preto
-    if (l < 15) return false;
+    // ❌ Bloqueia preto real
+    if (l < 10) return false;
 
-    // ❌ Bloqueia neon
-    if (s > CONFIG.saturationMax) return false;
+    // ❌ Bloqueia neon extremo
+    if (s > 90) return false;
 
-    // ✅ Branco e cinza (mas não preto)
-    if (s < CONFIG.saturationNeutral && l > 15) return true;
+    // ✅ Branco e cinza
+    if (s < 10 && l > 10) return true;
 
-    const { blue, green, yellow, beige } = CONFIG.hueRanges;
+    // ======================
+    // PRIORIDADE RGB (mais estável que Hue)
+    // ======================
 
-    // ✅ Azul (mais amplo)
-    if (h >= 170 && h <= 260) return true;
+    // Azul: componente azul dominante
+    if (b > r && b > g) return true;
 
-    if (h >= green[0] && h <= green[1]) return true;
-    if (h >= yellow[0] && h <= yellow[1]) return true;
-    if (h >= beige[0] && h <= beige[1] && s <= 65) return true;
+    // Verde: componente verde dominante
+    if (g > r && g > b) return true;
+
+    // Amarelo: vermelho e verde altos, azul baixo
+    if (r > 150 && g > 150 && b < 150) return true;
+
+    // Bege / marrom (tons quentes suaves)
+    if (r > g && g > b && s < 70) return true;
 
     return false;
 }
