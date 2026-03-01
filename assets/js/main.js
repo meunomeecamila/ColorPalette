@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const colorPicker = document.getElementById("colorPicker");
     const resultMessage = document.getElementById("resultMessage");
     const resultCard = document.getElementById("resultCard");
 
@@ -11,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const imageUpload = document.getElementById("imageUpload");
     const canvas = document.getElementById("imageCanvas");
+
+    if (!canvas) return; // segurança extra
+
     const ctx = canvas.getContext("2d");
 
     /* =========================
@@ -18,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================== */
 
     function updateResultUI(allowed) {
+        if (!resultMessage || !resultCard) return;
+
         if (allowed) {
             resultMessage.textContent = "DENTRO DA PALETA ✅";
             resultMessage.style.color = "#2e7d32";
@@ -32,62 +36,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================
-       COLOR PICKER
-    ========================== */
-
-    function handleColorSelection() {
-    const hex = colorPicker.value;
-
-    const { r, g, b } = hexToRgb(hex);
-    const hsl = rgbToHsl(r, g, b);
-
-    resultMessage.textContent =
-        `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
-
-    const allowed = isColorAllowed(r, g, b);
-    updateResultUI(allowed);
-}
-
-    colorPicker.addEventListener("input", handleColorSelection);
-    colorPicker.addEventListener("change", handleColorSelection);
-
-    /* =========================
        UPLOAD DE IMAGEM
     ========================== */
 
-    imageUpload.addEventListener("change", function (event) {
+    if (imageUpload) {
+        imageUpload.addEventListener("change", function (event) {
 
-        const file = event.target.files[0];
-        if (!file) return;
+            const file = event.target.files[0];
+            if (!file) return;
 
-        const reader = new FileReader();
+            const reader = new FileReader();
 
-        reader.onload = function (e) {
-            const img = new Image();
+            reader.onload = function (e) {
+                const img = new Image();
 
-            img.onload = function () {
+                img.onload = function () {
 
-                const maxWidth = 500;
-                const scale = maxWidth / img.width;
+                    const maxWidth = 500;
+                    const scale = img.width > maxWidth ? maxWidth / img.width : 1;
 
-                canvas.width = maxWidth;
-                canvas.height = img.height * scale;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
 
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                canvas.style.display = "block";
-                removeBtn.style.display = "block";
+                    canvas.style.display = "block";
+                    if (removeBtn) removeBtn.style.display = "block";
 
-                marker.style.display = "none";
-                colorPreview.style.backgroundColor = "transparent";
-                colorValues.textContent = "";
+                    if (marker) marker.style.display = "none";
+                    if (colorPreview) colorPreview.style.backgroundColor = "transparent";
+                    if (colorValues) colorValues.textContent = "";
+                };
+
+                img.src = e.target.result;
             };
 
-            img.src = e.target.result;
-        };
-
-        reader.readAsDataURL(file);
-    });
+            reader.readAsDataURL(file);
+        });
+    }
 
     /* =========================
        CAPTURA DE PIXEL
@@ -106,39 +92,50 @@ document.addEventListener("DOMContentLoaded", () => {
         const g = pixel[1];
         const b = pixel[2];
 
-        marker.style.left = x + "px";
-        marker.style.top = y + "px";
-        marker.style.display = "block";
+        if (marker) {
+            marker.style.left = x + "px";
+            marker.style.top = y + "px";
+            marker.style.display = "block";
+        }
 
         const rgbString = `rgb(${r}, ${g}, ${b})`;
-        colorPreview.style.backgroundColor = rgbString;
-        colorValues.textContent = rgbString;
 
-        const allowed = isColorAllowed(r, g, b);
-        updateResultUI(allowed);
+        if (colorPreview) colorPreview.style.backgroundColor = rgbString;
+        if (colorValues) colorValues.textContent = rgbString;
+
+        if (typeof isColorAllowed === "function") {
+            const allowed = isColorAllowed(r, g, b);
+            updateResultUI(allowed);
+        }
     });
 
     /* =========================
        REMOVER IMAGEM
     ========================== */
 
-    removeBtn.addEventListener("click", function () {
+    if (removeBtn) {
+        removeBtn.addEventListener("click", function () {
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.style.display = "none";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.style.display = "none";
 
-        marker.style.display = "none";
-        removeBtn.style.display = "none";
+            if (marker) marker.style.display = "none";
+            removeBtn.style.display = "none";
 
-        colorPreview.style.backgroundColor = "transparent";
-        colorValues.textContent = "";
+            if (colorPreview) colorPreview.style.backgroundColor = "transparent";
+            if (colorValues) colorValues.textContent = "";
 
-        imageUpload.value = "";
+            if (imageUpload) imageUpload.value = "";
 
-        resultMessage.textContent = "Selecione uma opção acima";
-        //resultMessage.textContent = `H:${Math.round(hsl.h)} S:${Math.round(hsl.s)} L:${Math.round(hsl.l)}`;
-        resultMessage.style.color = "#1c2b39";
-        resultCard.classList.remove("result-allowed", "result-blocked");
-    });
+            if (resultMessage) {
+                resultMessage.textContent = "Selecione uma opção acima";
+                resultMessage.style.color = "#1c2b39";
+            }
+
+            if (resultCard) {
+                resultCard.classList.remove("result-allowed", "result-blocked");
+            }
+        });
+    }
 
 });

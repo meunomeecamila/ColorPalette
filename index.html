@@ -2,88 +2,41 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <title>Camila 19</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Camila 19</title>
-
-    <!-- Fonte elegante -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
 
-    <header class="main-header">
-        <div class="header-overlay">
-            <!--<h1>Camila 19</h1>-->
-        </div>
-    </header>
+<header class="main-header"></header>
 
-    <main class="container">
-        <section class="intro">
-            <h2>Confira se sua roupa está dentro da paleta do evento</h2>
-            <p>Selecione uma cor ou envie uma foto para verificar.</p>
-        </section>
+<main class="container">
 
-        <!-- Aqui depois vamos colocar:
-             - Paleta visual
-             - Color picker
-             - Upload
-             - Resultado
-        -->
+    <section class="intro">
+        <h2>Sejam bem-vindos ao meu site!</h2>
+        <p>Escolha uma opção abaixo</p>
+    </section>
 
-        <section class="palette-section">
-    <h2>Paleta Oficial</h2>
-    <div class="palette-grid">
-        <div class="color-box azul"></div>
-        <div class="color-box verde"></div>
-        <div class="color-box amarelo"></div>
-        <div class="color-box bege"></div>
-        <div class="color-box marrom"></div>
-        <div class="color-box branco"></div>
-        <div class="color-box cinza"></div>
-    </div>
-</section>
+    <section class="home-buttons">
 
-<section class="interaction-section">
+        <a href="palette.html" class="home-btn">
+            Ver paleta de cores do evento
+        </a>
 
-    <div class="color-picker-area">
-        <h3>Selecionar uma cor</h3>
-        <input type="color" id="colorPicker">
-    </div>
+        <a href="info.html" class="home-btn">
+            Acessar Informações
+        </a>
 
-    <div class="upload-area">
-    <h3>Enviar foto da sua roupa</h3>
+        <a href="gifts.html" class="home-btn">
+            Dicas de presentes
+        </a>
 
-    <input type="file" id="imageUpload" accept="image/*">
+    </section>
 
-    <div class="canvas-wrapper">
-        <canvas id="imageCanvas"></canvas>
-        <div id="marker"></div>
-        <button id="removeImage" class="remove-btn">✕</button>
-    </div>
-
-    <div class="picked-color">
-        <div id="colorPreview"></div>
-        <span id="colorValues"></span>
-    </div>
-</div>
-
-</section>
-
-<section class="result-section">
-    <div id="resultCard" class="result-card">
-        <h2 id="resultMessage">Selecione uma opção acima</h2>
-    </div>
-</section>
-
-    </main>
-
-<script src="assets/js/config.js"></script>
-<script src="assets/js/color-utils.js"></script>
-<script src="assets/js/validator.js"></script>
-<script src="assets/js/main.js"></script>
+</main>
 
 </body>
 </html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Paleta | Camila 19</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- Botão voltar -->
+    <div class="back-container">
+    <a href="index.html" class="back-icon" aria-label="Voltar">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0a2a66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+</div>
+        <section class="intro">
+            <h2>Confira se sua roupa está dentro da paleta do evento</h2>
+            <p>Envie uma foto para verificar.</p>
+        </section>
+
+        <!-- Aqui depois vamos colocar:
+             - Paleta visual
+             - Color picker
+             - Upload
+             - Resultado
+        -->
+
+        <section class="palette-section">
+    <h2>Paleta Oficial</h2>
+    <div class="palette-grid">
+        <div class="color-box azul"></div>
+        <div class="color-box verde"></div>
+        <div class="color-box amarelo"></div>
+        <div class="color-box bege"></div>
+        <div class="color-box marrom"></div>
+        <div class="color-box branco"></div>
+        <div class="color-box cinza"></div>
+    </div>
+</section>
+
+<section class="interaction-section">
+
+    
+
+    <div class="upload-area">
+    <h3>Enviar foto da sua roupa</h3>
+
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <div class="canvas-wrapper">
+        <canvas id="imageCanvas"></canvas>
+        <div id="marker"></div>
+        <button id="removeImage" class="remove-btn">✕</button>
+    </div>
+
+    <div class="picked-color">
+        <div id="colorPreview"></div>
+        <span id="colorValues"></span>
+    </div>
+</div>
+
+</section>
+
+<section class="result-section">
+    <div id="resultCard" class="result-card">
+        <h2 id="resultMessage">Selecione uma opção acima</h2>
+    </div>
+</section>
+
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/color-utils.js"></script>
+<script src="assets/js/validator.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
